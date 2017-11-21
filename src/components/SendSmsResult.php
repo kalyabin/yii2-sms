@@ -35,4 +35,19 @@ class SendSmsResult extends Object
      * @var string Необработанные поля, которые вернул провайдер в SOAP-сообщении
      */
     public $rawProviderData;
+
+    /**
+     * @var string Имя отправителя
+     */
+    public $from;
+
+    /**
+     * @var string Имя получателя
+     */
+    public $to;
+
+    /**
+     * @var string Текст сообщения
+     */
+    public $text;
 }

@@ -2,6 +2,7 @@
 
 namespace tests;
 
+use kalyabin\sms\components\SendSmsResult;
 use PHPUnit\Framework\TestCase;
 use kalyabin\sms\components\WebSmsSoapApi;
 
@@ -41,43 +42,102 @@ class CaseWebSmsSoapApiTest extends TestCase
         $this->api->setClient($this->soap);
     }
 
-    /**
-     * @covers WebSmsSoapApi::getBalance()
-     */
-    public function testGetBalanceWithNull()
+    public function getBalanceProvider()
     {
-        $this->soap
-            ->expects($this->at(0))
-            ->method('__soapCall')
-            ->with('getBalance', [
-                [
-                    'login' => 'login',
-                    'pass' => 'password',
-                ]
-            ])
-            ->will($this->returnValue(new \stdClass()));
+        $expectedData1 = new \stdClass();
+        $expectedData1->return = '<result><balance>100.5</balance><userid>111</userid></result>';
 
-        $this->assertEquals(0, $this->api->getBalance());
+        $expectedData2 = new \stdClass();
+        $expectedData2->return = '<result><balance>30</balance><userid>111</userid></result>';
+
+        return [
+            [new \stdClass(), 0],
+            [$expectedData1, 100.5],
+            [$expectedData2, 30],
+        ];
+    }
+
+    public function getSendSmsProvider()
+    {
+        $expectedData1 = new \stdClass();
+        $expectedData1->return = '<result><record><state>Accepted</state></record></result>';
+
+        $expectedData2 = new \stdClass();
+        $expectedData2->return = '<result><record><state>Success</state></record></result>';
+
+        return [
+            [new \stdClass(), false],
+            [$expectedData1, true],
+            [$expectedData2, true]
+        ];
     }
 
     /**
      * @covers WebSmsSoapApi::getBalance()
+     * @dataProvider getBalanceProvider
+     *
+     * @param \stdClass $data Данные, которые будет возвращать SOAP
+     * @param float $balance Сумма на балансе
      */
-    public function testGetBalanceWithData()
+    public function testGetBalance($data, $balance)
     {
-        $expectedResult = new \stdClass();
-        $expectedResult->return = '<result><balance>100.5</balance><userid>111</userid></result>';
-
         $this->soap
             ->method('__soapCall')
             ->with('getBalance', [
                 [
-                    'login' => 'login',
-                    'pass' => 'password',
+                    'login' => $this->api->login,
+                    'pass' => $this->api->password,
                 ]
             ])
-            ->will($this->returnValue($expectedResult));
+            ->will($this->returnValue($data));
 
-        $this->assertEquals(100.5, $this->api->getBalance());
+        $this->assertEquals($balance, $this->api->getBalance());
+    }
+
+    /**
+     * @covers WebSmsSoapApi::sendSms()
+     * @dataProvider getSendSmsProvider
+     *
+     * @param \stdClass $data Данные, которые будет возвращать SOAP
+     * @param boolean $isSent Статус отправки
+     */
+    public function testSendSms($data, $isSent)
+    {
+        $this->soap
+            ->method('__soapCall')
+            ->with('sendSMS', [
+                [
+                    'login' => $this->api->login,
+                    'pass' => $this->api->password,
+                    'fromPhone' => $this->api->from,
+                    'messText' => 'testing',
+                    'toPhone' => '71111111111',
+                    'userMessId' => 0,
+                    'packageId' => 0,
+                    'GMT' => 0,
+                    'sendDate' => gmdate('d.m.Y H:i:s'),
+                    'test' => 0,
+                ]
+            ])
+            ->will($this->returnValue($data));
+
+        $result = $this->api->sendSms('71111111111', 'testing');
+
+        $this->assertInstanceOf(SendSmsResult::class, $result);
+        $this->assertEquals($isSent, $result->isSent);
+        $this->assertEquals('testing', $result->text);
+        $this->assertEquals('71111111111', $result->to);
+        $this->assertEquals('testing', $result->from);
+
+        if (empty($data->return)) {
+            $this->assertNull($result->providerData);
+            $this->assertNull($result->rawProviderData);
+        } else {
+            $this->assertInstanceOf(\SimpleXMLElement::class, $result->providerData);
+            $this->assertEquals($data->return, $result->rawProviderData);
+        }
+
+        $this->assertNull($result->errorCode);
+        $this->assertNull($result->errorMessage);
     }
 }

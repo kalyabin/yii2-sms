@@ -60,11 +60,17 @@ class WebSmsSoapApi extends SmsSoapClient
                 'isSent' => isset($reader->record->state) && ($reader->record->state == 'Accepted' || $reader->record->state == 'Success'),
                 'providerData' => $reader,
                 'rawProviderData' => $res->return,
+                'from' => $from,
+                'to' => $to,
+                'text' => $text,
             ]);
         }
 
         return new SendSmsResult([
             'isSent' => false,
+            'from' => $from,
+            'to' => $to,
+            'text' => $text,
         ]);
     }
 }
