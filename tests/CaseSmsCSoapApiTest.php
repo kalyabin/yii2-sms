@@ -3,20 +3,20 @@
 namespace tests;
 
 use kalyabin\sms\components\SendSmsResult;
+use kalyabin\sms\components\SmsCSoapApi;
 use PHPUnit\Framework\TestCase;
-use kalyabin\sms\components\WebSmsSoapApi;
 
 /**
- * Тестирование класса WebSmsSoapApi
+ * Тестирование класса SmsCSoapApi
  *
- * @see WebSmsSoapApi
+ * @see SmsCSoapApi
  *
  * @package tests
  */
-class CaseWebSmsSoapApiTest extends TestCase
+class CaseSmsCSoapApiTest extends TestCase
 {
     /**
-     * @var WebSmsSoapApi
+     * @var SmsCSoapApi
      */
     protected $api;
 
@@ -27,16 +27,15 @@ class CaseWebSmsSoapApiTest extends TestCase
 
     protected function setUp()
     {
-        $this->api = new WebSmsSoapApi([
-            'wsdl' => 'http://smpp3.websms.ru:8183/soap?WSDL',
+        $this->api = new SmsCSoapApi([
+            'wsdl' => 'http://smsc.ru/sys/soap.php?wsdl',
             'login' => 'login',
             'password' => 'password',
             'from' => 'testing',
-            'useHttpAuthorization' => false,
         ]);
 
         $this->soap = $this->getMockFromWsdl(
-            __DIR__ . '/websms.wsdl.xml', 'WebsmsSoapServService'
+            __DIR__ . '/smsc.wsdl.xml', 'ServiceSoap'
         );
 
         $this->api->setClient($this->soap);
@@ -45,10 +44,12 @@ class CaseWebSmsSoapApiTest extends TestCase
     public function getBalanceProvider()
     {
         $expectedData1 = new \stdClass();
-        $expectedData1->return = '<result><balance>100.5</balance><userid>111</userid></result>';
+        $expectedData1->balanceresult = new \stdClass();
+        $expectedData1->balanceresult->balance = 100.5;
 
         $expectedData2 = new \stdClass();
-        $expectedData2->return = '<result><balance>30</balance><userid>111</userid></result>';
+        $expectedData2->balanceresult = new \stdClass();
+        $expectedData2->balanceresult->balance = 30;
 
         return [
             [new \stdClass(), 0],
@@ -60,35 +61,51 @@ class CaseWebSmsSoapApiTest extends TestCase
     public function getSendSmsProvider()
     {
         $expectedData1 = new \stdClass();
-        $expectedData1->return = '<result><record><state>Accepted</state></record></result>';
+        $expectedData1->sendresult = new \stdClass();
+        $expectedData1->sendresult->id = 1;
+        $expectedData1->sendresult->error = 'has error';
 
         $expectedData2 = new \stdClass();
-        $expectedData2->return = '<result><record><state>Success</state></record></result>';
+        $expectedData2->sendresult = new \stdClass();
+        $expectedData2->sendresult->id = null;
+
+        $expectedData3 = new \stdClass();
+        $expectedData3->sendresult = new \stdClass();
+        $expectedData3->sendresult->id = 2;
 
         return [
             [new \stdClass(), false],
-            [$expectedData1, true],
-            [$expectedData2, true]
+            [$expectedData1, false],
+            [$expectedData2, false],
+            [$expectedData3, true],
         ];
     }
 
     public function getSendSmsFromProvider()
     {
         $expectedData1 = new \stdClass();
-        $expectedData1->return = '<result><record><state>Accepted</state></record></result>';
+        $expectedData1->sendresult = new \stdClass();
+        $expectedData1->sendresult->id = 1;
+        $expectedData1->sendresult->error = 'has error';
 
         $expectedData2 = new \stdClass();
-        $expectedData2->return = '<result><record><state>Success</state></record></result>';
+        $expectedData2->sendresult = new \stdClass();
+        $expectedData2->sendresult->id = null;
+
+        $expectedData3 = new \stdClass();
+        $expectedData3->sendresult = new \stdClass();
+        $expectedData3->sendresult->id = 2;
 
         return [
-            [new \stdClass(), 'first_step', false],
-            [$expectedData1, 'second_step', true],
-            [$expectedData2, 'third_step', true],
+            [new \stdClass(), 'step1', false],
+            [$expectedData1, 'step2', false],
+            [$expectedData2, 'step3', false],
+            [$expectedData3, 'step4', true],
         ];
     }
 
     /**
-     * @covers WebSmsSoapApi::getBalance()
+     * @covers SmsCSoapApi::getBalance()
      * @dataProvider getBalanceProvider
      *
      * @param \stdClass $data Данные, которые будет возвращать SOAP
@@ -98,10 +115,10 @@ class CaseWebSmsSoapApiTest extends TestCase
     {
         $this->soap
             ->method('__soapCall')
-            ->with('getBalance', [
+            ->with('get_balance', [
                 [
                     'login' => $this->api->login,
-                    'pass' => $this->api->password,
+                    'psw' => $this->api->password,
                 ]
             ])
             ->will($this->returnValue($data));
@@ -110,7 +127,7 @@ class CaseWebSmsSoapApiTest extends TestCase
     }
 
     /**
-     * @covers WebSmsSoapApi::sendSms()
+     * @covers SmsCSoapApi::sendSms()
      * @dataProvider getSendSmsProvider
      *
      * @param \stdClass $data Данные, которые будет возвращать SOAP
@@ -120,18 +137,13 @@ class CaseWebSmsSoapApiTest extends TestCase
     {
         $this->soap
             ->method('__soapCall')
-            ->with('sendSMS', [
+            ->with('send_sms', [
                 [
                     'login' => $this->api->login,
-                    'pass' => $this->api->password,
-                    'fromPhone' => $this->api->from,
-                    'messText' => 'testing',
-                    'toPhone' => '71111111111',
-                    'userMessId' => 0,
-                    'packageId' => 0,
-                    'GMT' => 0,
-                    'sendDate' => gmdate('d.m.Y H:i:s'),
-                    'test' => 0,
+                    'psw' => $this->api->password,
+                    'phones' => '71111111111',
+                    'mes' => 'testing',
+                    'sender' => $this->api->from,
                 ]
             ])
             ->will($this->returnValue($data));
@@ -144,20 +156,22 @@ class CaseWebSmsSoapApiTest extends TestCase
         $this->assertEquals('71111111111', $result->to);
         $this->assertEquals('testing', $result->from);
 
-        if (empty($data->return)) {
-            $this->assertNull($result->providerData);
-            $this->assertNull($result->rawProviderData);
-        } else {
-            $this->assertInstanceOf(\SimpleXMLElement::class, $result->providerData);
-            $this->assertEquals($data->return, $result->rawProviderData);
+        $this->assertEquals($data, $result->providerData);
+        $this->assertEquals($data, $result->rawProviderData);
+
+        if (!empty($data->sendresult->error)) {
+            $this->assertEquals($data->sendresult->error, $result->errorCode);
+            $this->assertEquals($data->sendresult->error, $result->errorMessage);
         }
 
-        $this->assertNull($result->errorCode);
-        $this->assertNull($result->errorMessage);
+        if ($isSent) {
+            $this->assertNotEmpty($result->providerData->sendresult->id);
+            $this->assertNotEmpty($result->rawProviderData->sendresult->id);
+        }
     }
 
     /**
-     * @covers WebSmsSoapApi::sendSmsFrom()
+     * @covers SmsCSoapApi::sendSmsFrom()
      * @dataProvider getSendSmsFromProvider
      *
      * @param \stdClass $data Данные, которые должен вернуть SOAP
@@ -168,18 +182,13 @@ class CaseWebSmsSoapApiTest extends TestCase
     {
         $this->soap
             ->method('__soapCall')
-            ->with('sendSMS', [
+            ->with('send_sms', [
                 [
                     'login' => $this->api->login,
-                    'pass' => $this->api->password,
-                    'fromPhone' => $this->api->from,
-                    'messText' => 'testing',
-                    'toPhone' => '71111111111',
-                    'userMessId' => 0,
-                    'packageId' => 0,
-                    'GMT' => 0,
-                    'sendDate' => gmdate('d.m.Y H:i:s'),
-                    'test' => 0,
+                    'psw' => $this->api->password,
+                    'phones' => '71111111111',
+                    'mes' => 'testing',
+                    'sender' => $from,
                 ]
             ])
             ->will($this->returnValue($data));
@@ -192,15 +201,17 @@ class CaseWebSmsSoapApiTest extends TestCase
         $this->assertEquals('71111111111', $result->to);
         $this->assertEquals($from, $result->from);
 
-        if (empty($data->return)) {
-            $this->assertNull($result->providerData);
-            $this->assertNull($result->rawProviderData);
-        } else {
-            $this->assertInstanceOf(\SimpleXMLElement::class, $result->providerData);
-            $this->assertEquals($data->return, $result->rawProviderData);
+        $this->assertEquals($data, $result->providerData);
+        $this->assertEquals($data, $result->rawProviderData);
+
+        if (!empty($data->sendresult->error)) {
+            $this->assertEquals($data->sendresult->error, $result->errorCode);
+            $this->assertEquals($data->sendresult->error, $result->errorMessage);
         }
 
-        $this->assertNull($result->errorCode);
-        $this->assertNull($result->errorMessage);
+        if ($isSent) {
+            $this->assertNotEmpty($result->providerData->sendresult->id);
+            $this->assertNotEmpty($result->rawProviderData->sendresult->id);
+        }
     }
 }

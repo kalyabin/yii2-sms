@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+        xmlns:tns="http://smsc.ru/sys/soap.php"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+        targetNamespace="http://smsc.ru/sys/soap.php"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://smsc.ru/sys/soap.php">
+            <xsd:element name="balance">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="login" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="psw" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:complexType name="BalanceResponseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="balance" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="error" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:element name="BalanceResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="balanceresult" type="tns:BalanceResponseType" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="send">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="login" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="psw" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="phones" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="mes" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="sender" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="time" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:complexType name="SendResponseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="balance" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cost" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cnt" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="error" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="SendResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sendresult" type="tns:SendResponseType" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="send2">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="login" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="psw" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="phones" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="mes" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="sender" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="time" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="query" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:complexType name="Error">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="phone" type="xsd:string" />
+                    <xsd:element minOccurs="1" maxOccurs="1" name="status" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="Send2ResponseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="id" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="balance" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cost" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cnt" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="error" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="errors" type="tns:Error" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="Send2Response">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="sendresult" type="tns:Send2ResponseType" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="cost">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="login" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="psw" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="phones" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="mes" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:complexType name="CostResponseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cost" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cnt" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="error" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="CostResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="costresult" type="tns:CostResponseType" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="cost2">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="login" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="psw" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="phones" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="mes" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="query" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:complexType name="Cost2ResponseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cost" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cnt" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="error" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="Cost2Response">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="costresult" type="tns:Cost2ResponseType" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="status">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="login" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="psw" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="phone" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="id" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="all" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:complexType name="StatusResponseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="status" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="last_date" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="last_timestamp" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="err" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="error" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="send_date" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="send_timestamp" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="phone" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cost" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="sender_id" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="status_name" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="message" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="operator" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="region" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="StatusResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="statusresult" type="tns:StatusResponseType" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="status2">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="login" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="psw" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="phone" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="id" type="xsd:string" />
+                        <xsd:element minOccurs="0" maxOccurs="1" name="all" type="xsd:string" />
+                        <xsd:element minOccurs="1" maxOccurs="1" name="query" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:complexType name="Status2ResponseType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="status" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="last_date" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="last_timestamp" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="err" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="error" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="send_date" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="send_timestamp" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="phone" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="cost" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="sender_id" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="status_name" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="message" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="operator" type="xsd:string" />
+                    <xsd:element minOccurs="0" maxOccurs="1" name="region" type="xsd:string" />
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="Status2Response">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element minOccurs="1" maxOccurs="1" name="statusresult" type="tns:Status2ResponseType" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="BalanceIn">
+        <wsdl:part name="parameters" element="tns:balance" />
+    </wsdl:message>
+    <wsdl:message name="BalanceOut">
+        <wsdl:part name="parameters" element="tns:BalanceResponse" />
+    </wsdl:message>
+    <wsdl:message name="SendIn">
+        <wsdl:part name="parameters" element="tns:send" />
+    </wsdl:message>
+    <wsdl:message name="SendOut">
+        <wsdl:part name="parameters" element="tns:SendResponse" />
+    </wsdl:message>
+    <wsdl:message name="Send2In">
+        <wsdl:part name="parameters" element="tns:send2" />
+    </wsdl:message>
+    <wsdl:message name="Send2Out">
+        <wsdl:part name="parameters" element="tns:Send2Response" />
+    </wsdl:message>
+    <wsdl:message name="CostIn">
+        <wsdl:part name="parameters" element="tns:cost" />
+    </wsdl:message>
+    <wsdl:message name="CostOut">
+        <wsdl:part name="parameters" element="tns:CostResponse" />
+    </wsdl:message>
+    <wsdl:message name="Cost2In">
+        <wsdl:part name="parameters" element="tns:cost2" />
+    </wsdl:message>
+    <wsdl:message name="Cost2Out">
+        <wsdl:part name="parameters" element="tns:Cost2Response" />
+    </wsdl:message>
+    <wsdl:message name="StatusIn">
+        <wsdl:part name="parameters" element="tns:status" />
+    </wsdl:message>
+    <wsdl:message name="StatusOut">
+        <wsdl:part name="parameters" element="tns:StatusResponse" />
+    </wsdl:message>
+    <wsdl:message name="Status2In">
+        <wsdl:part name="parameters" element="tns:status2" />
+    </wsdl:message>
+    <wsdl:message name="Status2Out">
+        <wsdl:part name="parameters" element="tns:Status2Response" />
+    </wsdl:message>
+
+    <wsdl:portType name="ServiceSoap">
+        <wsdl:operation name="get_balance">
+            <wsdl:input message="tns:BalanceIn" />
+            <wsdl:output message="tns:BalanceOut" />
+        </wsdl:operation>
+        <wsdl:operation name="send_sms">
+            <wsdl:input message="tns:SendIn" />
+            <wsdl:output message="tns:SendOut" />
+        </wsdl:operation>
+        <wsdl:operation name="send_sms2">
+            <wsdl:input message="tns:Send2In" />
+            <wsdl:output message="tns:Send2Out" />
+        </wsdl:operation>
+        <wsdl:operation name="get_sms_cost">
+            <wsdl:input message="tns:CostIn" />
+            <wsdl:output message="tns:CostOut" />
+        </wsdl:operation>
+        <wsdl:operation name="get_sms_cost2">
+            <wsdl:input message="tns:Cost2In" />
+            <wsdl:output message="tns:Cost2Out" />
+        </wsdl:operation>
+        <wsdl:operation name="get_status">
+            <wsdl:input message="tns:StatusIn" />
+            <wsdl:output message="tns:StatusOut" />
+        </wsdl:operation>
+        <wsdl:operation name="get_status2">
+            <wsdl:input message="tns:Status2In" />
+            <wsdl:output message="tns:Status2Out" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="ServiceSoap" type="tns:ServiceSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+        <wsdl:operation name="get_balance">
+            <soap:operation soapAction="http://smsc.ru/sys/soap.php" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="send_sms">
+            <soap:operation soapAction="http://smsc.ru/sys/soap.php" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="send_sms2">
+            <soap:operation soapAction="http://smsc.ru/sys/soap.php" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="get_sms_cost">
+            <soap:operation soapAction="http://smsc.ru/sys/soap.php" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="get_sms_cost2">
+            <soap:operation soapAction="http://smsc.ru/sys/soap.php" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="get_status">
+            <soap:operation soapAction="http://smsc.ru/sys/soap.php" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="get_status2">
+            <soap:operation soapAction="http://smsc.ru/sys/soap.php" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="Service">
+        <wsdl:port name="ServiceSoap" binding="tns:ServiceSoap">
+            <soap:address location="http://smsc.ru/sys/soap.php" />
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
