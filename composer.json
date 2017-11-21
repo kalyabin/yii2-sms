@@ -1,11 +1,11 @@
 {
-    "name": "kalyabin/yii2-websms",
+    "name": "kalyabin/yii2-sms",
     "description": "Yii2 components to use websms.ru service",
-    "keywords": ["yii2", "sms", "websms.ru"],
+    "keywords": ["yii2", "sms", "websms.ru", "smsc.ru"],
     "homepage": "https://github.com/kalyabin/yii2-websms/",
     "type": "package",
     "license": "BSD-3-Clause",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.5.0",
         "yiisoft/yii2": "*"
