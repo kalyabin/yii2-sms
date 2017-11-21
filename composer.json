@@ -1,6 +1,6 @@
 {
     "name": "kalyabin/yii2-sms",
-    "description": "Yii2 components to use websms.ru service",
+    "description": "Yii2 component to use external sms services as websms.ru or smsc.ru",
     "keywords": ["yii2", "sms", "websms.ru", "smsc.ru"],
     "homepage": "https://github.com/kalyabin/yii2-websms/",
     "type": "package",
