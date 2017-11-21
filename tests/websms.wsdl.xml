@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://ws.com/" name="WebsmsSoapServService">
+    <types>
+        <xsd:schema>
+            <xsd:import namespace="http://ws.com/" schemaLocation="http://smpp3.websms.ru:8183/soap?xsd=1"></xsd:import>
+        </xsd:schema>
+    </types>
+    <message name="sendSMS">
+        <part name="parameters" element="tns:sendSMS"></part>
+    </message>
+    <message name="sendSMSResponse">
+        <part name="parameters" element="tns:sendSMSResponse"></part>
+    </message>
+    <message name="sendSMS2">
+        <part name="parameters" element="tns:sendSMS2"></part>
+    </message>
+    <message name="sendSMS2Response">
+        <part name="parameters" element="tns:sendSMS2Response"></part>
+    </message>
+    <message name="sendSMSrecGMT">
+        <part name="parameters" element="tns:sendSMSrecGMT"></part>
+    </message>
+    <message name="sendSMSrecGMTResponse">
+        <part name="parameters" element="tns:sendSMSrecGMTResponse"></part>
+    </message>
+    <message name="sendFlashSMS">
+        <part name="parameters" element="tns:sendFlashSMS"></part>
+    </message>
+    <message name="sendFlashSMSResponse">
+        <part name="parameters" element="tns:sendFlashSMSResponse"></part>
+    </message>
+    <message name="getStatus">
+        <part name="parameters" element="tns:getStatus"></part>
+    </message>
+    <message name="getStatusResponse">
+        <part name="parameters" element="tns:getStatusResponse"></part>
+    </message>
+    <message name="getBalance">
+        <part name="parameters" element="tns:getBalance"></part>
+    </message>
+    <message name="getBalanceResponse">
+        <part name="parameters" element="tns:getBalanceResponse"></part>
+    </message>
+    <message name="getFromList">
+        <part name="parameters" element="tns:getFromList"></part>
+    </message>
+    <message name="getFromListResponse">
+        <part name="parameters" element="tns:getFromListResponse"></part>
+    </message>
+    <message name="getStatusMsg">
+        <part name="parameters" element="tns:getStatusMsg"></part>
+    </message>
+    <message name="getStatusMsgResponse">
+        <part name="parameters" element="tns:getStatusMsgResponse"></part>
+    </message>
+    <message name="AddSendingName">
+        <part name="parameters" element="tns:AddSendingName"></part>
+    </message>
+    <message name="AddSendingNameResponse">
+        <part name="parameters" element="tns:AddSendingNameResponse"></part>
+    </message>
+    <portType name="WebsmsSoapServ">
+        <operation name="sendSMS">
+            <input wsam:Action="http://ws.com/WebsmsSoapServ/sendSMSRequest" message="tns:sendSMS"></input>
+            <output wsam:Action="http://ws.com/WebsmsSoapServ/sendSMSResponse" message="tns:sendSMSResponse"></output>
+        </operation>
+        <operation name="sendSMS2">
+            <input wsam:Action="http://ws.com/WebsmsSoapServ/sendSMS2Request" message="tns:sendSMS2"></input>
+            <output wsam:Action="http://ws.com/WebsmsSoapServ/sendSMS2Response" message="tns:sendSMS2Response"></output>
+        </operation>
+        <operation name="sendSMSrecGMT">
+            <input wsam:Action="http://ws.com/WebsmsSoapServ/sendSMSrecGMTRequest" message="tns:sendSMSrecGMT"></input>
+            <output wsam:Action="http://ws.com/WebsmsSoapServ/sendSMSrecGMTResponse" message="tns:sendSMSrecGMTResponse"></output>
+        </operation>
+        <operation name="sendFlashSMS">
+            <input wsam:Action="http://ws.com/WebsmsSoapServ/sendFlashSMSRequest" message="tns:sendFlashSMS"></input>
+            <output wsam:Action="http://ws.com/WebsmsSoapServ/sendFlashSMSResponse" message="tns:sendFlashSMSResponse"></output>
+        </operation>
+        <operation name="getStatus">
+            <input wsam:Action="http://ws.com/WebsmsSoapServ/getStatusRequest" message="tns:getStatus"></input>
+            <output wsam:Action="http://ws.com/WebsmsSoapServ/getStatusResponse" message="tns:getStatusResponse"></output>
+        </operation>
+        <operation name="getBalance">
+            <input wsam:Action="http://ws.com/WebsmsSoapServ/getBalanceRequest" message="tns:getBalance"></input>
+            <output wsam:Action="http://ws.com/WebsmsSoapServ/getBalanceResponse" message="tns:getBalanceResponse"></output>
+        </operation>
+        <operation name="getFromList">
+            <input wsam:Action="http://ws.com/WebsmsSoapServ/getFromListRequest" message="tns:getFromList"></input>
+            <output wsam:Action="http://ws.com/WebsmsSoapServ/getFromListResponse" message="tns:getFromListResponse"></output>
+        </operation>
+        <operation name="getStatusMsg">
+            <input wsam:Action="http://ws.com/WebsmsSoapServ/getStatusMsgRequest" message="tns:getStatusMsg"></input>
+            <output wsam:Action="http://ws.com/WebsmsSoapServ/getStatusMsgResponse" message="tns:getStatusMsgResponse"></output>
+        </operation>
+        <operation name="AddSendingName">
+            <input wsam:Action="http://ws.com/WebsmsSoapServ/AddSendingNameRequest" message="tns:AddSendingName"></input>
+            <output wsam:Action="http://ws.com/WebsmsSoapServ/AddSendingNameResponse" message="tns:AddSendingNameResponse"></output>
+        </operation>
+    </portType>
+    <binding name="WebsmsSoapServPortBinding" type="tns:WebsmsSoapServ">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"></soap:binding>
+        <operation name="sendSMS">
+            <soap:operation soapAction=""></soap:operation>
+            <input>
+                <soap:body use="literal"></soap:body>
+            </input>
+            <output>
+                <soap:body use="literal"></soap:body>
+            </output>
+        </operation>
+        <operation name="sendSMS2">
+            <soap:operation soapAction=""></soap:operation>
+            <input>
+                <soap:body use="literal"></soap:body>
+            </input>
+            <output>
+                <soap:body use="literal"></soap:body>
+            </output>
+        </operation>
+        <operation name="sendSMSrecGMT">
+            <soap:operation soapAction=""></soap:operation>
+            <input>
+                <soap:body use="literal"></soap:body>
+            </input>
+            <output>
+                <soap:body use="literal"></soap:body>
+            </output>
+        </operation>
+        <operation name="sendFlashSMS">
+            <soap:operation soapAction=""></soap:operation>
+            <input>
+                <soap:body use="literal"></soap:body>
+            </input>
+            <output>
+                <soap:body use="literal"></soap:body>
+            </output>
+        </operation>
+        <operation name="getStatus">
+            <soap:operation soapAction=""></soap:operation>
+            <input>
+                <soap:body use="literal"></soap:body>
+            </input>
+            <output>
+                <soap:body use="literal"></soap:body>
+            </output>
+        </operation>
+        <operation name="getBalance">
+            <soap:operation soapAction=""></soap:operation>
+            <input>
+                <soap:body use="literal"></soap:body>
+            </input>
+            <output>
+                <soap:body use="literal"></soap:body>
+            </output>
+        </operation>
+        <operation name="getFromList">
+            <soap:operation soapAction=""></soap:operation>
+            <input>
+                <soap:body use="literal"></soap:body>
+            </input>
+            <output>
+                <soap:body use="literal"></soap:body>
+            </output>
+        </operation>
+        <operation name="getStatusMsg">
+            <soap:operation soapAction=""></soap:operation>
+            <input>
+                <soap:body use="literal"></soap:body>
+            </input>
+            <output>
+                <soap:body use="literal"></soap:body>
+            </output>
+        </operation>
+        <operation name="AddSendingName">
+            <soap:operation soapAction=""></soap:operation>
+            <input>
+                <soap:body use="literal"></soap:body>
+            </input>
+            <output>
+                <soap:body use="literal"></soap:body>
+            </output>
+        </operation>
+    </binding>
+    <service name="WebsmsSoapServService">
+        <port name="WebsmsSoapServPort" binding="tns:WebsmsSoapServPortBinding">
+            <soap:address location="http://smpp3.websms.ru:8183/soap"></soap:address>
+        </port>
+    </service>
+</definitions>

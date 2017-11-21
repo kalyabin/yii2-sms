@@ -11,6 +11,7 @@
         "yiisoft/yii2": "*"
     },
     "require-dev": {
+        "phpunit/phpunit": "*"
     },
     "authors": [
         {
@@ -20,7 +21,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "kalyabin\\sms\\": ""
+            "kalyabin\\sms\\": "src/"
         }
     }
 }

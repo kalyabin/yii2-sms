@@ -28,7 +28,7 @@ class WebSmsSoapApi extends SmsSoapClient
 
         if (isset($res->return)) {
             $reader = new \SimpleXMLElement($res->return);
-            return isset($reader->balance) ? $reader->balance : 0;
+            return isset($reader->balance) ? (float) $reader->balance : 0;
         }
 
         return 0;

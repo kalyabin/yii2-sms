@@ -78,6 +78,16 @@ abstract class SmsSoapClient extends Component
     }
 
     /**
+     * Установка клиента
+     *
+     * @param \SoapClient $client
+     */
+    public function setClient(\SoapClient $client)
+    {
+        $this->client = $client;
+    }
+
+    /**
      * Получить SOAP-клиент
      *
      * @return \SoapClient
