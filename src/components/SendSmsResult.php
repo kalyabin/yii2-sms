@@ -2,14 +2,12 @@
 
 namespace kalyabin\sms\components;
 
-use yii\base\Object;
-
 /**
  * Состояние отправки сообщения
  *
  * @package common\components\sms
  */
-class SendSmsResult extends Object
+class SendSmsResult extends \yii\base\Object
 {
     /**
      * @var boolean True, если сообщение было отправлено
