@@ -43,8 +43,8 @@ class SmsCSoapApi extends SmsSoapClient
 
         return new SendSmsResult([
             'isSent' => !empty($result->id) && empty($result->error),
-            'errorMessage' => $result->error,
-            'errorCode' => $result->error,
+            'errorMessage' => isset($result->error) ? $result->error : null,
+            'errorCode' => isset($result->error) ? $result->error : null,
             'providerData' => $res,
             'rawProviderData' => $res,
             'from' => $from,
