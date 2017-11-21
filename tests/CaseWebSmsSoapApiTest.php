@@ -55,7 +55,7 @@ class CaseWebSmsSoapApiTest extends TestCase
                     'pass' => 'password',
                 ]
             ])
-            ->willReturn(new \stdClass());
+            ->will($this->returnValue(new \stdClass()));
 
         $this->assertEquals(0, $this->api->getBalance());
     }
@@ -76,7 +76,7 @@ class CaseWebSmsSoapApiTest extends TestCase
                     'pass' => 'password',
                 ]
             ])
-            ->willReturn($expectedResult);
+            ->will($this->returnValue($expectedResult));
 
         $this->assertEquals(100.5, $this->api->getBalance());
     }
