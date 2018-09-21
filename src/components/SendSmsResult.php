@@ -7,7 +7,7 @@ namespace kalyabin\sms\components;
  *
  * @package common\components\sms
  */
-class SendSmsResult extends \yii\base\Object
+class SendSmsResult extends \yii\base\BaseObject
 {
     /**
      * @var boolean True, если сообщение было отправлено
